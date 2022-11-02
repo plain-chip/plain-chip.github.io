@@ -4,7 +4,7 @@
     var openedWindow = window.open('https://app.pipedrive.com/auth/login')
 
    const ok = function () {
-    setTimeout(openedWindow.postMessage("123",'https://app.pipedrive.com/auth/login'), 5000)
+    setTimeout(openedWindow.postMessage("alert(document.domain)",'https://app.pipedrive.com/auth/login'), 5000)
    }
 
     ok()
