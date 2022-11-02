@@ -1,0 +1,18 @@
+<!doctype html>
+<body>
+<script>
+    var openedWindow = window.open('https://app.pipedrive.com/auth/login')
+
+   const ok = function () {
+    setTimeout(openedWindow.postMessage("ehhe",'https://app.pipedrive.com/auth/login'), 5000)
+   }
+
+    ok()
+
+    
+    window.addEventListener("message", function(e){
+     alert("Target site says" + e.data)
+    }
+);
+</script>
+    </body>
