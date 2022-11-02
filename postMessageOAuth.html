@@ -11,7 +11,7 @@
 
     
     window.addEventListener("message", function(e){
-     alert("Target site says" + e.data.name)
+     alert("Target site says" + JSON.stringify(e.data))
     }
 );
 </script>
