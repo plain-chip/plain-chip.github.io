@@ -1,0 +1,11 @@
+<html>
+<script>  
+var url = "https://www.skillshare.com/api/graphql?query=query%20viewerContext($isAuthenticated:%20Boolean!)%20{%20viewer%20@include(if:%20$isAuthenticated)%20{%20firstName%20}%20}&variables={%22isAuthenticated%22:true}";  
+fetch(url, {    
+    method: 'GET',    
+    cache: 'force-cache'
+    })
+.then(response => response.json())
+.then(data => console.log(data));
+</script>
+</html>
