@@ -1,23 +1,11 @@
 <html>
-    <!-- Step2, Get Userdata without Auth(Using cache)-->
-<script>
-//delay for cached
-setTimeout(function (){
-  // get information without auth
-  $.ajax({
-      url: "https://www.skillshare.com/api/graphql?query=query%20viewerContext($isAuthenticated:%20Boolean!)%20{%20viewer%20@include(if:%20$isAuthenticated)%20{%20firstName%20}%20}&variables={%22isAuthenticated%22:true}",
-      type: "get",
-      xhrFields: {
-        withCredentials: false 
-      },
-      headers: {
-          "Accept":"application/json",
-          "Accept-Language":"ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3",
-      },
-      success: function (data) {
-          console.info(data);
-      }
-  });
-}, 2000);
+<script>  
+var url = "https://www.skillshare.com/api/graphql?query=query%20viewerContext($isAuthenticated:%20Boolean!)%20{%20viewer%20@include(if:%20$isAuthenticated)%20{%20firstName%20}%20}&variables={%22isAuthenticated%22:true}";  
+fetch(url, {    
+    method: 'GET',    
+    cache: 'force-cache'
+    })
+.then(response => response.json())
+.then(data => console.log(data));
 </script>
-    <html>
+</html>
