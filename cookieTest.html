@@ -2,8 +2,7 @@
 <script>  
 var url = "https://gateway.chegg.com/me-web-bff/graphql?query=query+HeaderDynamicDataRetroFit+%7B%0A++userProfile+%7B%0A++++uuid%0A++++email%0A++++emailShow%0A++++avatar%0A++++fname%3A+firstName%0A++++lname%3A+lastName%0A++++__typename%0A++%7D%0A++cartCount%0A++userCourses+%7B%0A++++courseDashboardUrl%0A++++courseName%0A++++courseUuid%0A++++__typename%0A++%7D%0A%7D%0A&operationName=HeaderDynamicDataRetroFit";  
 fetch(url, {    
-    method: 'GET',    
-    cache: 'force-cache'
+    method: 'GET'
     })
 .then(response => response.json())
 .then(data => console.log(data));
