@@ -4,7 +4,7 @@
       function submitRequest()
       {
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "https:\/\/siriusxm.com\/services\/account", true);
+        xhr.open("POST", "https:\/\/www.siriusxm.com\/services\/account", true);
         xhr.setRequestHeader("Content-Type", "application\/json");
         xhr.withCredentials = true;
         xhr.send("{\"includeFuturePaymentInfo\": true,\"refreshAccount\": true}");
