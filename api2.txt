@@ -1,3 +1,5 @@
+who are you and wtf is this list?
+did you think I wouldn't notice?
 http://10000000.pixiv.net/api/stat.json?109538495
 http://10000000.pixiv.net/api/stat.json?92876669
 http://1s7vmel6xi.execute-api.us-east-1.amazonaws.com
