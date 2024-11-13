@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>PostMessage Sender</h1>
+<h1>PostMessage Sender for Watson's Wine</h1>
 <p>This page sends test messages to the Watson's Wine page opened in a new tab.</p>
 
 <!-- Button to open the Watson's Wine page -->
@@ -16,9 +16,9 @@
 <!-- Buttons to send various types of messages -->
 <button onclick="sendMessage('pageClick')">Send 'pageClick'</button>
 <button onclick="sendMessage(300)">Send Numeric Value (300)</button>
-<button onclick="sendMessage('This is a simple text message.')">Send Simple Text</button>
-<button onclick="sendMessage(JSON.stringify({ type: 'htmlContent', content: '<h3>Test JSON HTML Content</h3><p>This is a test HTML message in JSON format.</p>' }))">Send JSON HTML Content</button>
-<button onclick="sendMessage('<p>Simple test paragraph.</p>')">Send Simple HTML</button>
+<button onclick="sendMessage('<div style=\'color: red;\'>This is a simple test message.</div>')">Send Simple HTML</button>
+<button onclick="sendMessage(JSON.stringify({ type: 'htmlContent', content: '<div>This is a content in JSON format!</div>' }))">Send JSON HTML Content</button>
+<button onclick="sendMessage('<p>This is a static HTML test message.</p>')">Send Simple Paragraph HTML</button>
 
 <script>
     let watsonsWineWindow = null;
@@ -26,7 +26,7 @@
 
     function openWatsonsWine() {
         // Open the Watson's Wine page in a new tab and save the reference
-        watsonsWineWindow = window.open("https://www.watsonswine.com/winestorage/storagehistory/WineAuth.do?pagename=cellar_request_delivery&amp;locale=en", "_blank");
+        watsonsWineWindow = window.open("https://www.watsonswine.com/winestorage/storagehistory/ignored/tehe?pagename=lololwhat&locale=en", "_blank");
         if (watsonsWineWindow) {
             console.log("Watson's Wine page opened in new tab.");
         } else {
@@ -44,7 +44,37 @@
             alert("Please open the Watson's Wine page first by clicking 'Open Watson's Wine Page'.");
         }
     }
+
+    // Listen for messages from Watson's Wine (this can be useful for debugging if you have access to the page)
+    window.addEventListener('message', function(event) {
+        if (event.origin !== targetOrigin) {
+            console.warn("Message received from untrusted origin:", event.origin);
+            return;
+        }
+
+        console.log("Message received:", event.data); // Log the incoming message for debugging
+
+        // Handle messages based on content
+        if (event.data === "pageClick") {
+            window.scrollTo(0, 0);
+        } else if (!isNaN(event.data)) {
+            document.getElementById('addTemplate').style.height = event.data + "px";
+        } else {
+            try {
+                // Attempt to insert HTML content into a sample element
+                document.querySelector(".popupIframe").innerHTML = event.data;
+                document.querySelector(".popupIframe").style.display = "block";
+            } catch (error) {
+                console.error("Error inserting HTML content:", error);
+            }
+        }
+    });
 </script>
+
+<div class="popupIframe" style="display: none; padding: 20px; border: 1px solid #ccc;">
+    <h3>Popup Content</h3>
+    <p>Messages sent here should appear.</p>
+</div>
 
 </body>
 </html>
