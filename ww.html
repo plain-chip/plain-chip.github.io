@@ -37,8 +37,8 @@
     function sendMessage(message) {
         // Send a message to the Watson's Wine page if the window is open
         if (watsonsWineWindow && !watsonsWineWindow.closed) {
+            console.log("Sending message: ", message);  // Log the message before sending
             watsonsWineWindow.postMessage(message, targetOrigin);
-            console.log("Message sent:", message);
         } else {
             console.warn("Watson's Wine page is not open. Please open it first.");
             alert("Please open the Watson's Wine page first by clicking 'Open Watson's Wine Page'.");
