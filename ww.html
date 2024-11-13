@@ -24,8 +24,9 @@
     let watsonsWineWindow = null;
     const targetOrigin = "https://www.watsonswine.com";
 
+    // Open the Watson's Wine page in a new tab
     function openWatsonsWine() {
-        // Open the Watson's Wine page in a new tab and save the reference
+        // Open the page in a new tab and save the reference
         watsonsWineWindow = window.open("https://www.watsonswine.com/winestorage/storagehistory/WineAuth.do?pagename=cellar_request_delivery&amp;locale=en", "_blank");
         if (watsonsWineWindow) {
             console.log("Watson's Wine page opened in new tab.");
@@ -34,10 +35,11 @@
         }
     }
 
+    // Send a message to the Watson's Wine page
     function sendMessage(message) {
-        // Send a message to the Watson's Wine page if the window is open
+        // Check if the Watson's Wine page is open
         if (watsonsWineWindow && !watsonsWineWindow.closed) {
-            console.log("Sending message: ", message);  // Log the message before sending
+            console.log("Sending message: ", message);  // Log the message being sent
             watsonsWineWindow.postMessage(message, targetOrigin);
         } else {
             console.warn("Watson's Wine page is not open. Please open it first.");
@@ -45,8 +47,9 @@
         }
     }
 
-    // Listen for messages from Watson's Wine (this can be useful for debugging if you have access to the page)
+    // Listen for messages from Watson's Wine
     window.addEventListener('message', function(event) {
+        // Ensure the message is coming from the correct origin
         if (event.origin !== targetOrigin) {
             console.warn("Message received from untrusted origin:", event.origin);
             return;
@@ -61,7 +64,8 @@
             document.getElementById('addTemplate').style.height = event.data + "px";
         } else {
             try {
-                // Attempt to insert HTML content into a sample element
+                // Try to insert HTML content into the .popupIframe element
+                console.log("Inserting content into popupIframe.");
                 document.querySelector(".popupIframe").innerHTML = event.data;
                 document.querySelector(".popupIframe").style.display = "block";
             } catch (error) {
