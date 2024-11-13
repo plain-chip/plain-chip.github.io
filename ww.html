@@ -8,7 +8,10 @@
 <body>
 
 <h1>PostMessage Sender</h1>
-<p>This page sends test messages to the Watson's Wine page to verify its event listener's response.</p>
+<p>This page sends test messages to the Watson's Wine page opened in a new tab.</p>
+
+<!-- Button to open the Watson's Wine page -->
+<button onclick="openWatsonsWine()">Open Watson's Wine Page</button>
 
 <!-- Buttons to send various types of messages -->
 <button onclick="sendMessage('pageClick')">Send 'pageClick'</button>
@@ -16,18 +19,30 @@
 <button onclick="sendMessage('<h3>Test Popup Content</h3><p>This is test HTML content.</p>')">Send HTML Content</button>
 
 <script>
-    // The target origin (Watson's Wine page)
+    let watsonsWineWindow = null;
     const targetOrigin = "https://www.watsonswine.com";
 
+    function openWatsonsWine() {
+        // Open the Watson's Wine page in a new tab and save the reference
+        watsonsWineWindow = window.open("https://www.watsonswine.com/winestorage/storagehistory/ignored/tehe?pagename=lololwhat&locale=en", "_blank");
+        if (watsonsWineWindow) {
+            console.log("Watson's Wine page opened in new tab.");
+        } else {
+            alert("Please allow pop-ups for this website to open the Watson's Wine page.");
+        }
+    }
+
     function sendMessage(message) {
-        const targetWindow = document.querySelector('iframe').contentWindow;
-        targetWindow.postMessage(message, targetOrigin);
-        console.log("Message sent:", message);
+        // Send a message to the Watson's Wine page if the window is open
+        if (watsonsWineWindow && !watsonsWineWindow.closed) {
+            watsonsWineWindow.postMessage(message, targetOrigin);
+            console.log("Message sent:", message);
+        } else {
+            console.warn("Watson's Wine page is not open. Please open it first.");
+            alert("Please open the Watson's Wine page first by clicking 'Open Watson's Wine Page'.");
+        }
     }
 </script>
-
-<!-- Embed the Watson's Wine page in an iframe for testing -->
-<iframe src="https://www.watsonswine.com/winestorage/storagehistory/ignored/tehe?pagename=lololwhat&locale=en" width="100%" height="400"></iframe>
 
 </body>
 </html>
