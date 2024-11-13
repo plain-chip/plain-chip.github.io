@@ -13,11 +13,19 @@
 <!-- Button to open the Watson's Wine page -->
 <button onclick="openWatsonsWine()">Open Watson's Wine Page</button>
 
-<!-- Buttons to send various types of messages -->
+<!-- Button to send a basic message -->
 <button onclick="sendMessage('pageClick')">Send 'pageClick'</button>
-<button onclick="sendMessage(300)">Send Numeric Value (300)</button>
-<button onclick="sendMessage('<div style=\'color: red;\'>This is a simple test message.</div>')">Send Simple HTML</button>
-<button onclick="sendMessage('<div>This is a static HTML test message.</div>')">Send Static HTML</button>
+<button onclick="sendMessage('Hello from the test page!')">Send Plain Text</button>
+
+<!-- Buttons to test HTML injection -->
+<button onclick="sendMessage('<div style=\'color: red; font-weight: bold;\'>This is a test HTML message</div>')">Send Red Bold HTML</button>
+<button onclick="sendMessage('<p>This is a static <strong>HTML</strong> message with a <em>test</em> tag.</p>')">Send Complex HTML</button>
+
+<!-- Placeholder for the content that should be injected -->
+<div class="popupIframe" style="display: none; padding: 20px; border: 1px solid #ccc;">
+    <h3>Popup Content</h3>
+    <p>Messages sent here should appear.</p>
+</div>
 
 <script>
     let watsonsWineWindow = null;
@@ -36,7 +44,7 @@
     // Send a message to the Watson's Wine page
     function sendMessage(message) {
         if (watsonsWineWindow && !watsonsWineWindow.closed) {
-            console.log("Sending message: ", message);
+            console.log("Sending message:", message);  // Log the message before sending
             watsonsWineWindow.postMessage(message, targetOrigin);
         } else {
             console.warn("Watson's Wine page is not open. Please open it first.");
@@ -54,72 +62,36 @@
 
         console.log("Message received:", event.data); // Log the incoming message
 
-        // Handle HTML content insertion in various ways
+        // Handle plain text message insertion
         if (typeof event.data === 'string') {
             // Method 1: Insert using innerHTML
             try {
-                console.log("Method 1: Inserting using innerHTML");
-                document.querySelector(".popupIframe").innerHTML = event.data;
+                console.log("Inserting message using innerHTML");
+                document.querySelector(".popupIframe").innerHTML = "<p>" + event.data + "</p>";
                 document.querySelector(".popupIframe").style.display = "block";
             } catch (error) {
                 console.error("Error with innerHTML insertion:", error);
             }
 
-            // Method 2: Insert using insertAdjacentHTML
+            // Method 2: Insert using textContent (for plain text only)
             try {
-                console.log("Method 2: Inserting using insertAdjacentHTML");
-                document.querySelector(".popupIframe").insertAdjacentHTML('beforeend', event.data);
+                console.log("Inserting message using textContent");
+                document.querySelector(".popupIframe").textContent = event.data;
+            } catch (error) {
+                console.error("Error with textContent insertion:", error);
+            }
+
+            // Method 3: Handle injecting HTML if possible
+            try {
+                console.log("Attempting to inject raw HTML.");
+                document.querySelector(".popupIframe").innerHTML = event.data;
                 document.querySelector(".popupIframe").style.display = "block";
             } catch (error) {
-                console.error("Error with insertAdjacentHTML insertion:", error);
+                console.error("Error injecting HTML:", error);
             }
-
-            // Method 3: Create new element and append to DOM
-            try {
-                console.log("Method 3: Creating new element and appending");
-                let newElement = document.createElement('div');
-                newElement.innerHTML = event.data;
-                document.querySelector(".popupIframe").appendChild(newElement);
-                document.querySelector(".popupIframe").style.display = "block";
-            } catch (error) {
-                console.error("Error with new element insertion:", error);
-            }
-
-            // Method 4: Using jQuery .html() (if jQuery is available)
-            if (typeof $ !== 'undefined') {
-                try {
-                    console.log("Method 4: Inserting using jQuery .html()");
-                    $(".popupIframe").html(event.data);
-                    $(".popupIframe").show();
-                } catch (error) {
-                    console.error("Error with jQuery .html() insertion:", error);
-                }
-            }
-
-            // Method 5: Setting innerHTML after cleaning content
-            try {
-                console.log("Method 5: Setting innerHTML after cleaning content");
-                let iframeElement = document.querySelector(".popupIframe");
-                iframeElement.innerHTML = ""; // Clear existing content
-                iframeElement.innerHTML = event.data; // Insert new content
-                iframeElement.style.display = "block";
-            } catch (error) {
-                console.error("Error with innerHTML cleaning:", error);
-            }
-        } else if (event.data === "pageClick") {
-            window.scrollTo(0, 0);
-        } else if (!isNaN(event.data)) {
-            document.getElementById('addTemplate').style.height = event.data + "px";
-        } else {
-            console.error("Unsupported message type:", event.data);
         }
     });
 </script>
-
-<div class="popupIframe" style="display: none; padding: 20px; border: 1px solid #ccc;">
-    <h3>Popup Content</h3>
-    <p>Messages sent here should appear.</p>
-</div>
 
 </body>
 </html>
