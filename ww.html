@@ -17,8 +17,8 @@
 <button onclick="sendMessage('pageClick')">Send 'pageClick'</button>
 <button onclick="sendMessage(300)">Send Numeric Value (300)</button>
 <button onclick="sendMessage('<div style=\'color: red;\'>This is a simple test message.</div>')">Send Simple HTML</button>
-<button onclick="sendMessage(JSON.stringify({ type: 'htmlContent', content: '<div>This is a content in JSON format!</div>' }))">Send JSON HTML Content</button>
-<button onclick="sendMessage('<p>This is a static HTML test message.</p>')">Send Simple Paragraph HTML</button>
+<button onclick="sendMessage('<div>This is another simple HTML test message.</div>')">Send Another Simple HTML</button>
+<button onclick="sendMessage('<p>This is a static HTML test message.</p>')">Send Static HTML</button>
 
 <script>
     let watsonsWineWindow = null;
@@ -57,20 +57,22 @@
 
         console.log("Message received:", event.data); // Log the incoming message for debugging
 
-        // Handle messages based on content
-        if (event.data === "pageClick") {
-            window.scrollTo(0, 0);
-        } else if (!isNaN(event.data)) {
-            document.getElementById('addTemplate').style.height = event.data + "px";
-        } else {
+        // Check if the message is raw HTML or a type of content
+        if (typeof event.data === 'string') {
             try {
-                // Try to insert HTML content into the .popupIframe element
-                console.log("Inserting content into popupIframe.");
+                // If the message is a string, assume it's HTML content and insert it
+                console.log("Inserting content into popupIframe:", event.data);
                 document.querySelector(".popupIframe").innerHTML = event.data;
                 document.querySelector(".popupIframe").style.display = "block";
             } catch (error) {
                 console.error("Error inserting HTML content:", error);
             }
+        } else if (event.data === "pageClick") {
+            window.scrollTo(0, 0);
+        } else if (!isNaN(event.data)) {
+            document.getElementById('addTemplate').style.height = event.data + "px";
+        } else {
+            console.error("Unsupported message type:", event.data);
         }
     });
 </script>
