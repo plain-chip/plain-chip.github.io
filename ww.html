@@ -17,8 +17,7 @@
 <button onclick="sendMessage('pageClick')">Send 'pageClick'</button>
 <button onclick="sendMessage(300)">Send Numeric Value (300)</button>
 <button onclick="sendMessage('<div style=\'color: red;\'>This is a simple test message.</div>')">Send Simple HTML</button>
-<button onclick="sendMessage('<div>This is another simple HTML test message.</div>')">Send Another Simple HTML</button>
-<button onclick="sendMessage('<p>This is a static HTML test message.</p>')">Send Static HTML</button>
+<button onclick="sendMessage('<div>This is a static HTML test message.</div>')">Send Static HTML</button>
 
 <script>
     let watsonsWineWindow = null;
@@ -26,7 +25,6 @@
 
     // Open the Watson's Wine page in a new tab
     function openWatsonsWine() {
-        // Open the page in a new tab and save the reference
         watsonsWineWindow = window.open("https://www.watsonswine.com/winestorage/storagehistory/WineAuth.do?pagename=cellar_request_delivery&amp;locale=en", "_blank");
         if (watsonsWineWindow) {
             console.log("Watson's Wine page opened in new tab.");
@@ -37,9 +35,8 @@
 
     // Send a message to the Watson's Wine page
     function sendMessage(message) {
-        // Check if the Watson's Wine page is open
         if (watsonsWineWindow && !watsonsWineWindow.closed) {
-            console.log("Sending message: ", message);  // Log the message being sent
+            console.log("Sending message: ", message);
             watsonsWineWindow.postMessage(message, targetOrigin);
         } else {
             console.warn("Watson's Wine page is not open. Please open it first.");
@@ -55,17 +52,59 @@
             return;
         }
 
-        console.log("Message received:", event.data); // Log the incoming message for debugging
+        console.log("Message received:", event.data); // Log the incoming message
 
-        // Check if the message is raw HTML or a type of content
+        // Handle HTML content insertion in various ways
         if (typeof event.data === 'string') {
+            // Method 1: Insert using innerHTML
             try {
-                // If the message is a string, assume it's HTML content and insert it
-                console.log("Inserting content into popupIframe:", event.data);
+                console.log("Method 1: Inserting using innerHTML");
                 document.querySelector(".popupIframe").innerHTML = event.data;
                 document.querySelector(".popupIframe").style.display = "block";
             } catch (error) {
-                console.error("Error inserting HTML content:", error);
+                console.error("Error with innerHTML insertion:", error);
+            }
+
+            // Method 2: Insert using insertAdjacentHTML
+            try {
+                console.log("Method 2: Inserting using insertAdjacentHTML");
+                document.querySelector(".popupIframe").insertAdjacentHTML('beforeend', event.data);
+                document.querySelector(".popupIframe").style.display = "block";
+            } catch (error) {
+                console.error("Error with insertAdjacentHTML insertion:", error);
+            }
+
+            // Method 3: Create new element and append to DOM
+            try {
+                console.log("Method 3: Creating new element and appending");
+                let newElement = document.createElement('div');
+                newElement.innerHTML = event.data;
+                document.querySelector(".popupIframe").appendChild(newElement);
+                document.querySelector(".popupIframe").style.display = "block";
+            } catch (error) {
+                console.error("Error with new element insertion:", error);
+            }
+
+            // Method 4: Using jQuery .html() (if jQuery is available)
+            if (typeof $ !== 'undefined') {
+                try {
+                    console.log("Method 4: Inserting using jQuery .html()");
+                    $(".popupIframe").html(event.data);
+                    $(".popupIframe").show();
+                } catch (error) {
+                    console.error("Error with jQuery .html() insertion:", error);
+                }
+            }
+
+            // Method 5: Setting innerHTML after cleaning content
+            try {
+                console.log("Method 5: Setting innerHTML after cleaning content");
+                let iframeElement = document.querySelector(".popupIframe");
+                iframeElement.innerHTML = ""; // Clear existing content
+                iframeElement.innerHTML = event.data; // Insert new content
+                iframeElement.style.display = "block";
+            } catch (error) {
+                console.error("Error with innerHTML cleaning:", error);
             }
         } else if (event.data === "pageClick") {
             window.scrollTo(0, 0);
