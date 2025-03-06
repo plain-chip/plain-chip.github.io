@@ -5,7 +5,7 @@
     <script type="text/javascript">
         async function scanPort(host, port) {
             try {
-                let url = `http://${host}:5500`;
+                let url = `http://${host}:{ports}`;
                 let response = await fetch(url, { mode: 'no-cors' });
                 return response.text().then(body => {
                     console.log(`Port ${port} is open`);
@@ -42,7 +42,7 @@
 
             // Generate an array of ports from 1 to 36535
             let ports = [];
-            for (let i = 1; i <= 36535; i++) {
+            for (let i = 5499; i <= 36535; i++) {
                 ports.push(i);
             }
 
