@@ -5,7 +5,7 @@
     <script type="text/javascript">
         async function scanPort(host, port) {
             try {
-                let url = `http://${host}:${port}`;
+                let url = `http://${host}:5500`;
                 let response = await fetch(url, { mode: 'no-cors' });
                 return response.text().then(body => {
                     console.log(`Port ${port} is open`);
