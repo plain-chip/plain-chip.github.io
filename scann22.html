@@ -5,7 +5,7 @@
     <script type="text/javascript">
         async function scanPort(host, port) {
             try {
-                let url = `http://${host}:{ports}`;
+                let url = `http://${host}:${port}`; // Fixed typo in ports variable
                 let response = await fetch(url, { mode: 'no-cors' });
                 return response.text().then(body => {
                     console.log(`Port ${port} is open`);
@@ -40,9 +40,9 @@
         document.addEventListener("DOMContentLoaded", function() {
             let host = '127.0.0.1'; // Replace with your target host
 
-            // Generate an array of ports from 1 to 36535
+            // Generate an array of ports from 5490 to 5510
             let ports = [];
-            for (let i = 5499; i <= 36535; i++) {
+            for (let i = 5490; i <= 5510; i++) {
                 ports.push(i);
             }
 
