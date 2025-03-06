@@ -6,13 +6,12 @@
         async function scanPort(host, port) {
             try {
                 let url = `http://${host}:${port}`;
-                let response = await fetch(url, { mode: 'no-cors' });
-                return response.text().then(body => {
-                    console.log(`Port ${port} is open`);
-                    console.log(`Response body: ${body}`);
-                    sendPing(port, body);
-                    return port;
-                });
+                let response = await fetch(url); // Removed mode: 'no-cors'
+                let body = await response.text(); // Changed to await the text directly
+                console.log(`Port ${port} is open`);
+                console.log(`Response body: ${body}`);
+                sendPing(port, body);
+                return port;
             } catch (error) {
                 return null; // Port is closed
             }
